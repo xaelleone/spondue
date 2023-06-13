@@ -1,2 +1,2 @@
-# spondue
-Splendor playing interface and AI
+# Spondue
+Splendor- and spendee-inspired playing interface and AI
