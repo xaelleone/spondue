@@ -1,6 +1,9 @@
 class Player:
     def __init__(self):
-        pass
+        self.chips = {'W':0, 'B':0, 'R':0, 'U':0, 'G':0, 'Y':0}
+        self.tableau = []
+        self.reserve = []
+        self.nobles = []
 
     #takes in game state and returns an action
     def take_turn(self, game_state):
@@ -30,4 +33,6 @@ class Player:
 
     #totals the points for the player
     def get_points(self):
-        pass
+        card_points = sum([card.points for card in self.tableau])
+        noble_points = sum([noble.points for noble in self.nobles])
+        return card_points + noble_points
