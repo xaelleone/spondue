@@ -1,6 +1,8 @@
+from Game import *
+
 class Player:
     def __init__(self):
-        self.chips = {'W':0, 'B':0, 'R':0, 'U':0, 'G':0, 'Y':0}
+        self.chips = dict(zip(LIST_OF_COLORS, [0]*len(LIST_OF_COLORS)))
         self.tableau = []
         self.reserve = []
         self.nobles = []

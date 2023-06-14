@@ -1,6 +1,22 @@
 # stores the state for the splendor game, and simulates the game
+import Player 
+
+BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
+LIST_OF_COLORS = ['W', 'B', 'R', 'U', 'G', 'Y']
+
 class Game:
-    def __init__(self):
+    # takes in a list of players in turn order
+    def __init__(self, players):
+
+        #initialize players
+        self.players = players
+
+        #initialize bank as dict
+        color_chip_count = BANK_GIVEN_PLAYER_COUNT[len(players)]
+        self.bank = dict(zip(LIST_OF_COLORS, [color_chip_count]*len(LIST_OF_COLORS)))
+        self.bank['Y'] = 5
+
+    
         pass
 
     # takes a player's turn. takes a player, asks for them to take their turn, and updates the game
@@ -16,7 +32,7 @@ class Game:
         pass
 
     # alters the player's state given their turn action. gives them cards, adds or deducts chips, etc.
-    # this function should check the legality of player_action, and throw an Exception if illegal
+    # this function should check the b  legality of player_action, and throw an Exception if illegal
     def alter_player_state(self, player, player_action):
         pass
         # if exception caught, cause player to lose
