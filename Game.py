@@ -19,12 +19,13 @@ class Game:
     # this function should check the legality of player_action, and throw an Exception if illegal
     def alter_player_state(self, player, player_action):
         pass
+        # if exception caught, cause player to lose
 
     # deals a new card given a player action, or does nothing if the player didn't take a card
     def update_board(self, player_action):
         pass
 
-    # adds or reduces number of chips given a player action
+    # adds or reduces number of chips in the bank given a player action
     def update_chips(self, player_action):
         pass 
 
