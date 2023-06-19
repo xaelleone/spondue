@@ -1,8 +1,7 @@
 # stores the state for the splendor game, and simulates the game
 import Player 
-
 BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
-LIST_OF_COLORS = ['W', 'B', 'R', 'U', 'G', 'Y']
+GOLD_CHIPS = 5
 
 class Game:
     # takes in a list of players in turn order & list of cards
@@ -13,8 +12,8 @@ class Game:
 
         #initialize bank as dict
         color_chip_count = BANK_GIVEN_PLAYER_COUNT[len(players)]
-        self.bank = dict(zip(LIST_OF_COLORS, [color_chip_count]*len(LIST_OF_COLORS)))
-        self.bank['Y'] = 5 
+        self.bank = Colorset(initial_value=color_chip_count)
+        self.gold_in_bank = GOLD_CHIPS
 
         #initialize decks as a list of 3 lists
 

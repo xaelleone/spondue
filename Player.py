@@ -3,7 +3,7 @@ from Pieces import *
 
 class Player:
     def __init__(self):
-        self.chips = dict(zip(LIST_OF_COLORS, [0]*len(LIST_OF_COLORS)))
+        self.chips = Colorset(initial_value=0)
         self.tableau = []
         self.reserve = []
         self.nobles = []
