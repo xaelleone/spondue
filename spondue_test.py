@@ -1,5 +1,6 @@
 from Pieces import *
 from Player import *
+import pytest
 
 card1 = Card({'W':1,'B':2},'R',1,1)
 card2 = Card({'W':1,'B':2},'W',3,2)
@@ -26,3 +27,14 @@ def test_points_for_player():
     assert player2.get_points() == 0
     player2.tableau = [card1, card1, card3]
     assert player2.get_points() == 6
+
+def test_adding_card_for_player():
+    player1 = Player()
+    player1.get_card_from_board(card1)
+    assert player1.tableau == [card1]
+    with pytest.raises(IllegalMoveException):
+        player1.get_card_from_reserve(card1)
+    player1.reserve = [card2]
+    player1.get_card_from_reserve(card2)
+    assert player1.reserve == []
+    assert card2 in player1.tableau

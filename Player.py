@@ -1,4 +1,5 @@
 from Game import *
+from Pieces import *
 
 class Player:
     def __init__(self):
@@ -13,17 +14,21 @@ class Player:
 
 
     #maybe takes in a dict of colors and numbers and adds/subtracts
-    def update_chips(self, amount):
+    def update_chips(self, amount):        
         pass
         # throw an exception if illegal
     
     #takes in a card on the board and adds it to player tableau
     def get_card_from_board(self, card):
-        pass
+        self.tableau.append(card)
 
     #takes in a card in player reserve and adds it to player tableau
     def get_card_from_reserve(self, card):
-        pass
+        if card not in self.reserve:
+            raise IllegalMoveException()
+        self.tableau.append(card)
+        self.reserve.remove(card)
+
 
     #takes in a card on the board and adds it to player reserve
     def get_reserve_from_board(self, card):

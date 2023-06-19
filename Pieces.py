@@ -31,3 +31,7 @@ class Noble:
         count_dictionary = Counter(list_of_colors)
         met_reqs_list = [self.requirement[color] <= count_dictionary[color] for color in self.requirement]
         return all(met_reqs_list)
+
+
+class IllegalMoveException(Exception):
+    pass

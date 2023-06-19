@@ -5,8 +5,8 @@ BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
 LIST_OF_COLORS = ['W', 'B', 'R', 'U', 'G', 'Y']
 
 class Game:
-    # takes in a list of players in turn order
-    def __init__(self, players):
+    # takes in a list of players in turn order & list of cards
+    def __init__(self, players, cards):
 
         #initialize players
         self.players = players
@@ -14,9 +14,16 @@ class Game:
         #initialize bank as dict
         color_chip_count = BANK_GIVEN_PLAYER_COUNT[len(players)]
         self.bank = dict(zip(LIST_OF_COLORS, [color_chip_count]*len(LIST_OF_COLORS)))
-        self.bank['Y'] = 5
+        self.bank['Y'] = 5 
 
-    
+        #initialize decks as a list of 3 lists
+
+        #shuffle decks
+
+        #initialize board
+
+        #initialize nobles
+        
         pass
 
     # takes a player's turn. takes a player, asks for them to take their turn, and updates the game
