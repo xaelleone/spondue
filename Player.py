@@ -7,20 +7,19 @@ class Player:
         self.tableau = []
         self.reserve = []
         self.nobles = []
+        self.gold = 0
+
 
     #takes in game state and returns an action
     def take_turn(self, game_state):
         pass
+   
 
-
-    #maybe takes in a dict of colors and numbers and adds/subtracts
-    def update_chips(self, amount):        
-        pass
-        # throw an exception if illegal
-    
     #takes in a card on the board and adds it to player tableau
     def get_card_from_board(self, card):
         self.tableau.append(card)
+        #may need exception if card not on board
+
 
     #takes in a card in player reserve and adds it to player tableau
     def get_card_from_reserve(self, card):
@@ -32,11 +31,17 @@ class Player:
 
     #takes in a card on the board and adds it to player reserve
     def get_reserve_from_board(self, card):
-        pass
+        if len(self.reserve) > 3: #if reserve is full
+            raise IllegalMoveException()
+        self.reserve.append(card)
+        #may need exception if card not on board
+
 
     #takes in a noble and assigns it to the player
     def get_noble(self, noble):
-        pass
+        self.nobles.append(noble)
+        #may need exception if card not on board
+
 
     #totals the points for the player
     def get_points(self):

@@ -1,5 +1,7 @@
 # stores the state for the splendor game, and simulates the game
-import Player 
+from Player import *
+from CardNobles import *
+
 BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
 GOLD_CHIPS = 5
 

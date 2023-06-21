@@ -1,5 +1,6 @@
 from Pieces import *
 from Player import *
+from CardNobles import *
 import pytest
 
 expensiveCard = Card(Colorset(dict_of_colors={'W':100}),'R',1,1)
@@ -34,3 +35,11 @@ def test_adding_card_for_player():
     player1.get_card_from_reserve(blueRedCard)
     assert player1.reserve == []
     assert blueRedCard in player1.tableau
+
+def test_colorset_combination():
+    player1 = Player()
+    player1.chips = Colorset(initial_value=3)
+    with pytest.raises(IllegalMoveException):
+        player1.chips = player1.chips.subtract(expensiveCard.cost)
+    player1.chips = player1.chips.combine(expensiveCard.cost)
+    assert player1.chips.dict_of_colors['W'] == 103
