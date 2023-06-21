@@ -60,3 +60,6 @@ class Noble:
 
 class IllegalMoveException(Exception):
     pass
+
+
+
