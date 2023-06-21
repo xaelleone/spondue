@@ -101,3 +101,6 @@ nobleSigismund = Noble(Colorset(dict_of_colors={'U': 3, 'G': 3, 'W': 3 }), 3)
 nobleMorvran = Noble(Colorset(dict_of_colors={'R': 3, 'B': 3, 'G': 3}), 3)
 nobleKeira = Noble(Colorset(dict_of_colors={'R': 3, 'U': 3}), 3)
 nobleDandelion = Noble(Colorset(dict_of_colors={'R': 3, 'U': 3, 'W': 3 }), 3)
+
+ALL_CARDS = [card1, card2, card3, card4, card5, card6, card7, card8, card9, card10, card11, card12, card13, card14, card15, card16, card17, card18, card19, card20, card21, card22, card23, card24, card25, card26, card27, card28, card29, card30, card31, card32, card33, card34, card35, card36, card37, card38, card39, card40, card41, card42, card43, card44, card45, card46, card47, card48, card49, card50, card51, card52, card53, card54, card55, card56, card57, card58, card59, card60, card61, card62, card63, card64, card65, card66, card67, card68, card69, card70, card71, card72, card73, card74, card75, card76, card77, card78, card79, card80, card81, card82, card83, card84, card85, card86, card87, card88, card89, card90]
+ALL_NOBLES = [nobleGeralt, nobleCirilla, nobleAvalach, nobleYennefer, nobleTriss, nobleEmhyr, nobleSigismund, nobleMorvran, nobleKeira, nobleDandelion]

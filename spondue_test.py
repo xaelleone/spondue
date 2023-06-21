@@ -1,5 +1,6 @@
 from Pieces import *
 from Player import *
+from Game import *
 from CardNobles import *
 import pytest
 
@@ -43,3 +44,11 @@ def test_colorset_combination():
         player1.chips = player1.chips.subtract(expensiveCard.cost)
     player1.chips = player1.chips.combine(expensiveCard.cost)
     assert player1.chips.dict_of_colors['W'] == 103
+    player1.chips = player1.chips.subtract(redRedCard.cost)
+    assert player1.chips.dict_of_colors['R'] == 2
+
+def test_game_init():
+    testgame = Game(['Alice','Bob'])
+    assert len(testgame.nobles) == 3 
+    assert len(testgame.tier1deck) == 40
+    assert testgame.bank.dict_of_colors['W'] == 4

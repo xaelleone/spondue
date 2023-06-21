@@ -1,13 +1,15 @@
 # stores the state for the splendor game, and simulates the game
 from Player import *
 from CardNobles import *
+from CardNobles import *
+import random
 
 BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
 GOLD_CHIPS = 5
 
 class Game:
     # takes in a list of players in turn order & list of cards
-    def __init__(self, players, cards):
+    def __init__(self, players):
 
         #initialize players
         self.players = players
@@ -18,12 +20,23 @@ class Game:
         self.gold_in_bank = GOLD_CHIPS
 
         #initialize decks as a list of 3 lists
+        self.tier1deck = []
+        self.tier2deck = []
+        self.tier3deck =[]
+        for card in ALL_CARDS:
+            if card.tier == 1:
+                self.tier1deck.append(card)
+            elif card.tier == 2:
+                self.tier2deck.append(card)
+            elif card.tier == 3:
+                self.tier3deck.append(card)
 
         #shuffle decks
 
         #initialize board
 
         #initialize nobles
+        self.nobles = random.choices(ALL_NOBLES,k=3)
         
         pass
 
