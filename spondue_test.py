@@ -48,7 +48,9 @@ def test_colorset_combination():
     assert player1.chips.dict_of_colors['R'] == 2
 
 def test_game_init():
-    testgame = Game(['Alice','Bob'])
-    assert len(testgame.nobles) == 3 
-    assert len(testgame.tier1deck) == 40
-    assert testgame.bank.dict_of_colors['W'] == 4
+    testgame1 = Game(['Alice','Bob'])
+    assert len(testgame1.nobles) == 3 
+    assert len(testgame1.tier1deck) == 40
+    assert testgame1.bank.dict_of_colors['W'] == 4
+    testgame2 = Game(['Eve', 'Mallory', 'Polar Bear'])
+    assert testgame2.tier1deck != testgame1.tier1deck

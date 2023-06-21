@@ -32,14 +32,16 @@ class Game:
                 self.tier3deck.append(card)
 
         #shuffle decks
+        random.shuffle(self.tier1deck)
+        random.shuffle(self.tier2deck)
+        random.shuffle(self.tier3deck)
 
         #initialize board
+        self.board = []
 
         #initialize nobles
         self.nobles = random.choices(ALL_NOBLES,k=3)
         
-        pass
-
     # takes a player's turn. takes a player, asks for them to take their turn, and updates the game
     def player_turn(self, player):
         # player_action = self.player_list[player].take_turn(game_state)
