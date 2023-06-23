@@ -37,7 +37,6 @@ class Game:
         random.shuffle(self.tier3deck)
 
         #initialize board
-        self.board = []
 
         #initialize nobles
         self.nobles = random.choices(ALL_NOBLES,k=3)

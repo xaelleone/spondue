@@ -54,3 +54,4 @@ def test_game_init():
     assert testgame1.bank.dict_of_colors['W'] == 4
     testgame2 = Game(['Eve', 'Mallory', 'Polar Bear'])
     assert testgame2.tier1deck != testgame1.tier1deck
+

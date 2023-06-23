@@ -11,8 +11,8 @@ class Player:
 
 
     #takes in game state and returns an action
-    def take_turn(self, game_state):
-        pass
+    # def take_turn(self, game_state):
+    #    pass
    
 
     #takes in a card on the board and adds it to player tableau
@@ -48,3 +48,34 @@ class Player:
         card_points = sum([card.points for card in self.tableau])
         noble_points = sum([noble.points for noble in self.nobles])
         return card_points + noble_points
+
+class HumanPlayer(Player):
+    def __init__(self):
+        super().__init__()
+
+    def take_turn(self, game_state):
+        valid_input = 'brt'
+        action = input("Would you like to buy (b), reserve (r), or take chips from the bank (t)?")
+        while action not in valid_input:
+            action = input("Your options are buy (b), reserve (r), or take (t).")
+        
+        if action == 'b':
+            print(game_state.board)
+            buy_index = input("Which card would you like to buy?")
+            return game_state.board[buy_index]
+            
+        elif action == 'r':
+            print(game_state.board)
+            res_index = input("Which card would you like to reserve?")
+            return game_state.board[res_index]
+
+        elif action == 't':
+            print(game_state.bank.dict_of_colors)
+            r = input("How many red chips would you like?")
+            g = input("How many green chips would you like?")
+            b = input("How many black chips would you like?")
+            w = input("How many white chips would you like?")
+            u = input("How many blue chips would you like?")
+            color_dict = {'R':r,'G':g,'B':b,'W':w,'U':u}
+    
+            return Colorset(dict_of_colors=color_dict)
