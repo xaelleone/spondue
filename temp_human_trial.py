@@ -3,8 +3,8 @@ from Player import *
 from Game import *
 from CardNobles import *
 
-testgame1 = Game(['Alice','Bob'])    
-testgamestate = {'board':testgame1.board, 'bank':testgame1.bank}
-human = HumanPlayer('Katie')
+playerKatie = HumanPlayer('Katie')
+playerKevin = HumanPlayer('Kevin')
+testgame1 = Game([playerKatie, playerKevin])    
 
-human.take_turn(testgamestate)
+testgame1.play_game()
