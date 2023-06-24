@@ -34,20 +34,19 @@ class Colorset:
             self.dict_of_colors.update(Counter(color_list))
 
             
-    def combine(self, amount): #takes in two colorsets and returns new colorset
+    def combine(self, other): #takes in two colorsets and returns new colorset
         new_total = {}
         for color in self.dict_of_colors:
-            total = self.dict_of_colors[color] + amount.dict_of_colors[color]
+            total = self.dict_of_colors[color] + other.dict_of_colors[color]
             new_total.update({color: total})
         return Colorset(dict_of_colors = new_total)
 
-    def subtract(self, amount):
+    # subtracts this colorset's amounts from another, and doesn't let numbers go below zero 
+    def subtract_to_zero(self, other):
         new_total = {}
         for color in self.dict_of_colors:
-            total = self.dict_of_colors[color] - amount.dict_of_colors[color]
-            if total < 0:
-                raise IllegalMoveException()
-            new_total.update({color: total})
+            total = self.dict_of_colors[color] - other.dict_of_colors[color]
+            new_total.update({color: max(0, total)})
         return Colorset(dict_of_colors = new_total)
     
     def total(self):

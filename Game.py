@@ -1,5 +1,6 @@
 # stores the state for the splendor game, and simulates the game
 from Player import *
+from Pieces import *
 from CardNobles import *
 import random
 import itertools
@@ -9,6 +10,7 @@ BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
 GOLD_CHIPS = 5
 CARDS_PER_TIER = 4
 WINNING_POINTS = 15
+CHIP_LIMIT = 10
 
 class Game:
     # takes in a list of players in turn order & list of cards
@@ -71,8 +73,52 @@ class Game:
             self.board[tier].append(new_card)
 
     # adds or reduces number of chips in the bank given a player action
-    def update_chips(self, player_action):
-        pass 
+    # also gives those chips to the player or takes them away
+    def update_chips(self, player, player_action):
+        if player_action.action == 'reserve':
+            if self.gold_in_bank > 0:
+                self.gold_in_bank -= 1
+                player.gold += 1
+        elif player_action.action == 'take':
+            self.check_whether_chip_taking_is_allowed(player, player_action)
+            # transfer those chips to the player, to see if it is allowed
+            self.bank = self.bank.subtract_to_zero(player_action.chips)
+            player.chips = player.chips.combine(player_action.chips)
+        elif player_action.action == 'buy':
+            buyee = player_action.card
+            self.pay_chips(player, buyee)
+
+    # takes in a player and the card they want to buy, 
+    # deducts the appropriate chips and puts them in the bank
+    # throws an exception if the player can't afford the card     
+    def pay_chips(self, player, buyee):
+        discounted_cost = buyee.cost.subtract_to_zero(Colorset(list_of_cards=player.tableau))
+        gold_allocation = discounted_cost.subtract_to_zero(player.chips)
+        if gold_allocation.total() < player.gold:
+            raise IllegalMoveException(f'{player.name} cannot afford a card with cost {buyee.cost.dict_of_colors}')
+        
+        regular_chip_cost = discounted_cost.subtract_to_zero(gold_allocation)
+        player.chips = player.chips.subtract_to_zero(regular_chip_cost)
+        self.bank = self.bank.combine(regular_chip_cost)
+
+        gold_cost = gold_allocation.total()
+        player.gold -= gold_cost
+        self.gold_in_bank += gold_cost
+
+    def check_whether_chip_taking_is_allowed(self, player, player_action):
+        # convoluted logic to check if player only took two chips if there were four in that pile
+        taken_chips_dict = player_action.chips.dict_of_colors
+        flipped_dict = dict([count, color] for color, count in taken_chips_dict.items())
+        if 2 in flipped_dict and self.bank.get_amount(flipped_dict[2]) < 4:
+            raise IllegalMoveException(f'{player.name} tried to take 2 chips from a pile where there would be fewer than two left')
+        
+        # check if player took chips that break the bank
+        if not player_action.chips.check_requirement(self.bank):
+            raise IllegalMoveException(f'{player.name} tried to take chips which are not in the bank')
+        
+        # check that the player is not asking to have more than ten chips
+        if player.chips.combine(player_action.chips).total() + player.gold > CHIP_LIMIT:
+            raise IllegalMoveException(f'{player.name} tried to have more than ten chips')
 
     # check if somebody has won
     # returns True if someone has exceeded WINNING_POINTS, False otherwise
