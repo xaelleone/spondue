@@ -52,34 +52,21 @@ class Game:
 
     # updates the game state given a player's turn action, including 
     def update_game(self, player, player_action):
-        self.alter_player_state(player, player_action),
-        self.update_board(player_action)
-        pass
-
-    # alters the player's state given their turn action. gives them cards, adds or deducts chips, etc.
-    # this function should check the b  legality of player_action, and throw an Exception if illegal
-    def alter_player_state(self, player, player_action):
-        pass
-        # if exception caught, cause player to lose
-
-    # deals a new card given a player action, or does nothing if the player didn't take a card
-    def update_board(self, player_action):
-        pass
-
-    # deals one new card from the deck of that tier if it exists, and puts it on the board
-    def draw_new_card(self, tier):
-        # only pop a card if there is one
-        if self.decks[tier]:
-            new_card = self.decks[tier].pop()
-            self.board[tier].append(new_card)
-
-    # adds or reduces number of chips in the bank given a player action
-    # also gives those chips to the player or takes them away
-    def update_chips(self, player, player_action):
         if player_action.action == 'reserve':
-            if self.gold_in_bank > 0:
-                self.gold_in_bank -= 1
-                player.gold += 1
+            self.update_gold_on_reserve(player)
+            if player_action.topdeck is not None:
+                if not self.decks[player_action.topdeck]:
+                    raise IllegalMoveException(f'{player.name} tried to topdeck from empty deck {player_action.topdeck}')
+                reservee = self.decks[player_action.topdeck].pop()
+                player.get_reserve_from_board(reservee)
+            else:
+                reservee = player_action.card
+                if reservee in self.board[reservee.tier]:
+                    self.board[reservee.tier].remove(reservee)
+                    self.draw_new_card(reservee.tier)
+                    player.get_reserve_from_board(reservee)
+                else:
+                    raise IllegalMoveException(f'{player.name} tried to reserve unavailable card')
         elif player_action.action == 'take':
             self.check_whether_chip_taking_is_allowed(player, player_action)
             # transfer those chips to the player, to see if it is allowed
@@ -87,7 +74,30 @@ class Game:
             player.chips = player.chips.combine(player_action.chips)
         elif player_action.action == 'buy':
             buyee = player_action.card
-            self.pay_chips(player, buyee)
+            if buyee in player.reserve:
+                self.pay_chips(player, buyee)
+                player.get_card_from_reserve(buyee)
+            elif buyee in self.board[buyee.tier]:
+                self.pay_chips(player, buyee)
+                player.get_card_from_board(buyee)
+                self.board[buyee.tier].remove(buyee)
+                self.draw_new_card(buyee.tier)
+            else:
+                raise IllegalMoveException(f'{player.name} tried to buy unavailable card')
+
+    # deals one new card from the deck of that tier if it exists, and puts it on the board
+    def draw_new_card(self, tier):
+        # only pop a card if there is one
+        if self.decks[tier]:
+            new_card = self.decks[tier].pop()
+            self.board[tier].append(new_card)
+        
+    # updates everybody's gold when a player tries to reserve
+    # gives them a gold if there is one
+    def update_gold_on_reserve(self, player):
+        if self.gold_in_bank > 0:
+            self.gold_in_bank -= 1
+            player.gold += 1
 
     # takes in a player and the card they want to buy, 
     # deducts the appropriate chips and puts them in the bank
