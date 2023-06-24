@@ -83,7 +83,7 @@ class Game:
     # it is the person who who has the most points, with ties broken by fewest cards
     def find_winner(self):
         # clever function that adds points plus half the reciprocal of cards
-        hybrid_score_function = lambda x: x.get_points() + 0.5 / len(x.tableau)
+        hybrid_score_function = lambda x: x.get_points() + 0.5 / (1 + len(x.tableau))
         hybrid_scores = [hybrid_score_function(player) for player in self.players]
         winner_index = np.argmax(hybrid_scores)
         return self.players[winner_index]
