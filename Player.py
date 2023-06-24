@@ -2,7 +2,8 @@ from Game import *
 from Pieces import *
 
 class Player:
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.chips = Colorset(initial_value=0)
         self.tableau = []
         self.reserve = []
@@ -51,14 +52,19 @@ class Player:
 
 class Turn():
     valid_input = ['take', 'buy', 'reserve']
+    # action is a string, defined by above valid inputs
+    # card is a card object, for either buy or reserve
+    # chips is a colorset to get from the bank, only valid for take
+    # topdeck is an int 0, 1, or 2 depending on the tier, only valid for reserves
     def __init__(self, action, card = None, chips = None, topdeck = None):
         if action not in valid_input:
             raise IllegalMoveException()
         self.action = action
-
+        self.card = card
+        self.chips = chips
+        self.topdeck = topdeck
 
     
-
 class HumanPlayer(Player):
     def __init__(self):
         super().__init__()
@@ -75,9 +81,10 @@ class HumanPlayer(Player):
         if action == 'b':
             tier_index = int(input("Specify the tier of the card you want, 0-2: "))
             buy_index = int(input("Which of the cards do you want, 0-2? "))
-            return Turn('buy',game_state['board'][tier_index][buy_index])
+            return Turn('buy', card = game_state['board'][tier_index][buy_index])
             
         elif action == 'r':
+            topdeck_ask = input("Will you topdeck? 1 or 0: ")
             topdeck = int()
             res_index = input("Which card would you like to reserve?")
 
