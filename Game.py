@@ -49,6 +49,7 @@ class Game:
         while True:
             for player in self.players:
                 self.player_turn(player)
+                self.assign_noble(player)
             if self.check_game_will_end_this_round():
                 return self.find_winner().name
 
@@ -156,6 +157,13 @@ class Game:
         # check that the player is not asking to have more than ten chips
         if player.chips.combine(player_action.chips).total() + player.gold > CHIP_LIMIT:
             raise IllegalMoveException(f'{player.name} tried to have more than ten chips')
+
+    # after a player took their turn, assign them one noble they are eligible for
+    def assign_noble(self, player):
+        for noble in self.nobles:
+            if noble.check_requirement(player.tableau):
+                player.get_noble(noble)
+                break
 
     # check if somebody has won
     # returns True if someone has exceeded WINNING_POINTS, False otherwise
