@@ -50,8 +50,9 @@ def test_colorset_combination():
 def test_game_init():
     testgame1 = Game(['Alice','Bob'])
     assert len(testgame1.nobles) == 3 
-    assert len(testgame1.tier1deck) == 40
+    assert len(testgame1.decks[0]) == 36
     assert testgame1.bank.dict_of_colors['W'] == 4
     testgame2 = Game(['Eve', 'Mallory', 'Polar Bear'])
-    assert testgame2.tier1deck != testgame1.tier1deck
+    # test that decks are shuffled
+    assert testgame2.decks[0] != testgame1.decks[0]
 

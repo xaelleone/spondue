@@ -2,9 +2,11 @@
 from Player import *
 from CardNobles import *
 import random
+import itertools
 
 BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
 GOLD_CHIPS = 5
+CARDS_PER_TIER = 4
 
 class Game:
     # takes in a list of players in turn order & list of cards
@@ -18,24 +20,21 @@ class Game:
         self.bank = Colorset(initial_value=color_chip_count)
         self.gold_in_bank = GOLD_CHIPS
 
-        #initialize decks as a list of 3 lists
-        self.tier1deck = []
-        self.tier2deck = []
-        self.tier3deck =[]
-        for card in ALL_CARDS:
-            if card.tier == 1:
-                self.tier1deck.append(card)
-            elif card.tier == 2:
-                self.tier2deck.append(card)
-            elif card.tier == 3:
-                self.tier3deck.append(card)
+        # initialize decks by grouping cards by tier
+        # tiers have names which are 0-indexed numbers
+        self.decks = [list(g) for k, g in itertools.groupby(ALL_CARDS, lambda x: x.tier)]
 
         #shuffle decks
-        random.shuffle(self.tier1deck)
-        random.shuffle(self.tier2deck)
-        random.shuffle(self.tier3deck)
+        for deck in self.decks:
+            random.shuffle(deck)
 
         #initialize board
+        self.board = []
+        for tier in range(len(self.decks)):
+            # first, start an initial empty list for that tier
+            self.board.append([])
+            for _ in range(CARDS_PER_TIER):
+                self.draw_new_card(tier)
 
         #initialize nobles
         self.nobles = random.choices(ALL_NOBLES,k=3)
@@ -61,6 +60,13 @@ class Game:
     # deals a new card given a player action, or does nothing if the player didn't take a card
     def update_board(self, player_action):
         pass
+
+    # deals one new card from the deck of that tier if it exists, and puts it on the board
+    def draw_new_card(self, tier):
+        # only pop a card if there is one
+        if self.decks[tier]:
+            new_card = self.decks[tier].pop()
+            self.board[tier].append(new_card)
 
     # adds or reduces number of chips in the bank given a player action
     def update_chips(self, player_action):
