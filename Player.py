@@ -1,6 +1,7 @@
 from Game import *
 from Pieces import *
 
+
 class Player:
     def __init__(self, name):
         self.name = name
@@ -57,24 +58,39 @@ class Turn():
     # chips is a colorset to get from the bank, only valid for take
     # topdeck is an int 0, 1, or 2 depending on the tier, only valid for reserves
     def __init__(self, action, card = None, chips = None, topdeck = None):
-        if action not in VALID_INPUT:
-            raise IllegalMoveException()
+        if action not in Turn.VALID_INPUT:
+            raise IllegalMoveException("Turn type not valid")
 
+        #checking validity if buying
         if action == 'buy':
             if card is None or chips is not None or topdeck is not None:
-                raise IllegalMoveException()
+                raise IllegalMoveException("Buying with wrong set of arguments")
         
-        elif action == 'reserve':
-            if chips is not None or (card is not None and topdeck is not None) or (card is None and topdeck is None):
-                raise IllegalMoveException()
+        #checking validity if reserving
+        elif action == 'reserve':        
+            if chips is not None:
+                raise IllegalMoveException("Can't take chips while reserving")
+            
+            if topdeck is not None:
+                if card is not None or topdeck not in range(NUMBER_OF_TIERS):
+                    raise IllegalMoveException("Can't topdeck with cards or tier not valid")
+            
+            if card is not None and topdeck is not None:
+                raise IllegalMoveException("Can't reserve card and topdeck")
 
         elif action == 'take':
             if chips is None or card is not None or topdeck is not None:
-                raise IllegalMoveException()
-            # elif list(chips.values())
+                raise IllegalMoveException("Can't take chips and do other things")
 
-        if topdeck not in range(NUMBER_OF_TIERS):
-            raise IllegalMoveException()
+            taken_vals = list(chips.dict_of_colors.values())
+
+            if 2 in taken_vals:
+                if sum(taken_vals) != 2 or min(taken_vals) < 0:
+                    raise IllegalMoveException("Can't take this number of chips")
+            else:
+                if (sum(taken_vals) > 3 or (max(taken_vals) > 1)) or min(taken_vals) < 0:
+                    raise IllegalMoveException("Can't take this number of chips")
+
         self.chips = chips
         self.topdeck = topdeck
         self.action = action
@@ -86,6 +102,7 @@ class HumanPlayer(Player):
         super().__init__(name)
 
     def take_turn(self, game_state): #game state is a dict of game board, game bank, and other players' board / bank / reserve
+        # TODO: should in theory show the other players' things, which is in game_state
         print("Here is the board: ")
         print("Tier 0: ", [(card.cost.dict_of_colors, card.color, card.points) for card in game_state['board'][0]])
         print("Tier 1: ", [(card.cost.dict_of_colors, card.color, card.points) for card in game_state['board'][1]])
@@ -94,13 +111,18 @@ class HumanPlayer(Player):
         print("The bank: ", game_state['bank'].dict_of_colors)
 
         valid_input = 'brt'
+
         action = input("Would you like to buy (b), reserve (r), or take chips from the bank (t)? ")
-        while action not in valid_input and len(action) != 1:
+        while action not in valid_input or len(action) != 1:
             action = input("Your options are buy (b), reserve (r), or take (t). ")
         
         if action == 'b':
             tier_index = int(input("Specify the tier (0-2) of the card you want: "))
+            if tier_index not in range(NUMBER_OF_TIERS):
+                raise IllegalMoveException("This was not a valid tier.")
             buy_index = int(input("Index (0-3) of the card you want: "))
+            if buy_index not in range(CARDS_PER_TIER):
+                raise IllegalMoveException("That is not a valid index.")
             return Turn(action = 'buy', card = game_state['board'][tier_index][buy_index])
             
         elif action == 'r':
@@ -109,15 +131,20 @@ class HumanPlayer(Player):
                 topdeck_tier = int(input("Which tier do you want, 0 1 or 2: "))
                 return Turn(action='reserve', topdeck = topdeck_tier)
             tier_index = int(input("Specify the tier (0-2) of the card you want: "))
+            if tier_index not in range(NUMBER_OF_TIERS):
+                raise IllegalMoveException("This was not a valid tier.")
             buy_index = int(input("Index (0-3) of the card you want: "))
+            if buy_index not in range(CARDS_PER_TIER):
+                raise IllegalMoveException("That is not a valid index.")
+
             return Turn(action = 'reserve', card = game_state['board'][tier_index][buy_index])
 
         elif action == 't':
-            r = input("How many red chips would you like?")
-            g = input("How many green chips would you like?")
-            b = input("How many black chips would you like?")
-            w = input("How many white chips would you like?")
-            u = input("How many blue chips would you like?")
+            r = int(input("How many red chips would you like? "))
+            g = int(input("How many green chips would you like? "))
+            b = int(input("How many black chips would you like? "))
+            w = int(input("How many white chips would you like? "))
+            u = int(input("How many blue chips would you like? "))
             color_dict = {'R':r,'G':g,'B':b,'W':w,'U':u}
     
             return Turn(action = "take", chips = Colorset(dict_of_colors=color_dict))
