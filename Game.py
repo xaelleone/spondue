@@ -4,10 +4,12 @@ from CardNobles import *
 from CardNobles import *
 import random
 import itertools
+import numpy as np
 
 BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
 GOLD_CHIPS = 5
 CARDS_PER_TIER = 4
+WINNING_POINTS = 15
 
 class Game:
     # takes in a list of players in turn order & list of cards
@@ -74,8 +76,18 @@ class Game:
         pass 
 
     # check if somebody has won
-    # returns the player that won
-    def check_win(self):
-        pass
+    # returns True if someone has exceeded WINNING_POINTS, False otherwise
+    def check_game_will_end_this_round(self):
+        return any([player.get_points() >= WINNING_POINTS for player in self.players])
+
+    # upon the game ending, find out who won the game
+    # it is the person who who has the most points, with ties broken by fewest cards
+    def find_winner(self):
+        # clever function that adds points plus half the reciprocal of cards
+        hybrid_score_function = lambda x: x.get_points() + 0.5 / len(x.tableau)
+        hybrid_scores = [hybrid_score_function(player) for player in self.players]
+        winner_index = np.argmax(hybrid_scores)
+        return self.players[winner_index]
+
 
 
