@@ -4,5 +4,7 @@ from Game import *
 from CardNobles import *
 
 testgame1 = Game(['Alice','Bob'])    
-human = HumanPlayer()
-human.take_turn(testgame1)
+testgamestate = {'board':testgame1.board, 'bank':testgame1.bank}
+human = HumanPlayer('Katie')
+
+human.take_turn(testgamestate)

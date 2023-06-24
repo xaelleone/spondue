@@ -11,7 +11,7 @@ df_cards = df[df['Type']=='card']
 df_nobles = df[df['Type']=='noble']
 
 def make_card(row):
-    tier = row['Tier']
+    tier = row['Tier']-1 #to correct for zero indexing
     color = row['Color']
     points = row['Points']
     cost = row['Cost']
