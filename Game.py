@@ -131,7 +131,7 @@ class Game:
     def pay_chips(self, player, buyee):
         discounted_cost = buyee.cost.subtract_to_zero(Colorset(list_of_cards=player.tableau))
         gold_allocation = discounted_cost.subtract_to_zero(player.chips)
-        if gold_allocation.total() < player.gold:
+        if gold_allocation.total() > player.gold:
             raise IllegalMoveException(f'{player.name} cannot afford a card with cost {buyee.cost.dict_of_colors}')
         
         regular_chip_cost = discounted_cost.subtract_to_zero(gold_allocation)
