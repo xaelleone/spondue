@@ -50,6 +50,12 @@ class Colorset:
             new_total.update({color: total})
         return Colorset(dict_of_colors = new_total)
     
+    def total(self):
+        return sum(self.dict_of_colors.values)
+    
+    def get_amount(self, color):
+        return self.dict_of_colors[color]
+
     def check_requirement(self, wallet): #checks whether a colorset meets a requirement
         met_requirements = [self.dict_of_colors[color] <= wallet.dict_of_colors[color] for color in LIST_OF_COLORS]
         return all(met_requirements)
@@ -69,7 +75,8 @@ class Noble:
     
 
 class IllegalMoveException(Exception):
-    pass
+    def __init__(self, message=None):
+        super().__init__(message)
 
 
 
