@@ -76,7 +76,7 @@ class Game:
             self.bank = self.bank.subtract_to_zero(player_action.chips)
             player.chips = player.chips.combine(player_action.chips)
         elif player_action.action == 'buy':
-            self.update_game_buy(player_action.card)
+            self.update_game_buy(player, player_action.card)
             
     # updates the state of the decks and player reserve when the player topdecks
     def update_cards_player_topdeck_reserve(self, player, tier):
