@@ -102,6 +102,7 @@ class HumanPlayer(Player):
         super().__init__(name)
 
     def take_turn(self, game_state): #game state is a dict of game board, game bank, and other players' board / bank / reserve
+        # TODO: should in theory show the other players' things, which is in game_state
         print("Here is the board: ")
         print("Tier 0: ", [(card.cost.dict_of_colors, card.color, card.points) for card in game_state['board'][0]])
         print("Tier 1: ", [(card.cost.dict_of_colors, card.color, card.points) for card in game_state['board'][1]])
