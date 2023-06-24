@@ -1,7 +1,6 @@
 # stores the state for the splendor game, and simulates the game
 from Player import *
 from CardNobles import *
-from CardNobles import *
 import random
 import itertools
 import numpy as np
