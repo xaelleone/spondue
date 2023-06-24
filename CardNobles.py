@@ -4,21 +4,21 @@ from Pieces import *
 df = pd.read_csv("CardNobles.csv")
 
 def get_costs(row):
-    return Colorset(dict_of_colors=row[LIST_OF_COLORS].to_dict())
+    return Colorset(dict_of_colors=row[LIST_OF_COLORS].astype(int).to_dict())
 
 df['Cost'] = df.apply(get_costs, axis=1)
 df_cards = df[df['Type']=='card']
 df_nobles = df[df['Type']=='noble']
 
 def make_card(row):
-    tier = row['Tier']-1 #to correct for zero indexing
+    tier = int(row['Tier']-1) #to correct for zero indexing
     color = row['Color']
-    points = row['Points']
+    points = int(row['Points'])
     cost = row['Cost']
     return Card(cost, color, points, tier)
 
 def make_noble(row):
-    points = row['Points']
+    points = int(row['Points'])
     req = row['Cost']
     return Noble(req, points)
 

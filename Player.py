@@ -112,10 +112,11 @@ class HumanPlayer(Player):
         print("Tier 1: ", [(card.cost.dict_of_colors, card.color, card.points) for card in game_state['board'][1]])
         print("Tier 2: ", [(card.cost.dict_of_colors, card.color, card.points) for card in game_state['board'][2]])
         print("")
-        print("The bank: ", game_state['bank'].dict_of_colors)
+        print("The bank: ", game_state['bank'].dict_of_colors, " with ", game_state['gold_avail'], " gold.")
         print("")
-        print("You have these colors: ", [card.color for card in self.tableau])
-        print("This is your bank,: ", [self.chips.dict_of_colors], " with ", self.gold, " gold.")
+        print("Your reserved cards: ", ([(card.cost.dict_of_colors, card.color, card.points) for card in self.reserve]))
+        print("You have these colors: ", ([card.color for card in self.tableau]), " and ", self.get_points(), " points.")
+        print("This is your bank: ", [self.chips.dict_of_colors], " with ", self.gold, " gold.")
         valid_input = 'brt'
 
         action = input("Would you like to buy (b), reserve (r), or take chips from the bank (t)? ")
@@ -123,6 +124,10 @@ class HumanPlayer(Player):
             action = input("Your options are buy (b), reserve (r), or take (t). ")
         
         if action == 'b':
+            from_res_ask = int(input("Will you buy from reserve? 1 or 0: "))
+            if from_res_ask:
+                res_index = int(input("Index of the card in your reserve: "))
+                return Turn(action = 'buy', card = self.reserve[res_index])
             tier_index = int(input("Specify the tier (0-2) of the card you want: "))
             if tier_index not in range(NUMBER_OF_TIERS):
                 raise IllegalMoveException("This was not a valid tier.")

@@ -7,4 +7,4 @@ playerKatie = HumanPlayer('Katie')
 playerKevin = HumanPlayer('Kevin')
 testgame1 = Game([playerKatie, playerKevin])    
 
-testgame1.play_game()
+print(testgame1.play_game())

@@ -10,7 +10,7 @@ BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
 GOLD_CHIPS = 5
 CARDS_PER_TIER = 4
 NUMBER_OF_TIERS = 3
-WINNING_POINTS = 1
+WINNING_POINTS = 15
 CHIP_LIMIT = 10
 
 class Game:
@@ -58,7 +58,8 @@ class Game:
         player_action = player.take_turn({
             'board': self.board,
             'bank': self.bank,
-            'other_players': self.players
+            'other_players': self.players,
+            'gold_avail': self.gold_in_bank
         })
         self.update_game(player, player_action)
 
