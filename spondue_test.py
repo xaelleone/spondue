@@ -4,7 +4,7 @@ from Game import *
 from CardNobles import *
 import pytest
 
-expensiveCard = Card(Colorset(dict_of_colors={'W':100}),'R',1,0)
+expensiveCard = Card(Colorset(dict_of_colors={'W':100,'B':100,'U':100,'R':100,'G':100}),'R',1,0)
 redRedCard = Card(Colorset(dict_of_colors={'R':1}),'R',1,0)
 blueRedCard = Card(Colorset(dict_of_colors={'R':2,'U':2}),'U',2,2)
 
@@ -40,12 +40,13 @@ def test_adding_card_for_player():
 def test_colorset_combination():
     player1 = Player('Mallory')
     player1.chips = Colorset(initial_value=3)
-    with pytest.raises(IllegalMoveException):
-        player1.chips = player1.chips.subtract(expensiveCard.cost)
+    player1.chips = player1.chips.subtract_to_zero(expensiveCard.cost)
+    assert sum(list(player1.chips.dict_of_colors.values())) == 0
     player1.chips = player1.chips.combine(expensiveCard.cost)
-    assert player1.chips.dict_of_colors['W'] == 103
-    player1.chips = player1.chips.subtract(redRedCard.cost)
-    assert player1.chips.dict_of_colors['R'] == 2
+    assert player1.chips.dict_of_colors['W'] == 100
+    player1.chips = player1.chips.subtract_to_zero(redRedCard.cost)
+    assert player1.chips.dict_of_colors['R'] == 99
+
 
 def test_game_init():
     testgame1 = Game([Player('Alice'), Player('Bob')])
@@ -77,3 +78,44 @@ def test_winner_correctly_determined():
     playerAlice.get_card_from_board(expensiveCard)
     playerAlice.get_card_from_board(redRedCard)
     assert game.find_winner() == playerBob
+
+
+def test_pay_chips():
+    playerAlice = Player('Alice')
+    playerBob = Player('Bob')
+    game = Game([playerAlice, playerBob])
+
+    #first case
+    playerAlice.gold = 500
+    game.pay_chips(playerAlice, expensiveCard)
+    assert game.gold_in_bank == 505
+    assert playerAlice.gold == 0 
+    
+    with pytest.raises(IllegalMoveException):
+        game.pay_chips(playerAlice, game.board[0][1])
+    
+    #second case
+    playerBob.chips = Colorset(initial_value=4)
+
+    with pytest.raises(IllegalMoveException):
+        game.pay_chips(playerBob, expensiveCard) #bob is poor
+    
+    playerBob.gold = 500 #bob spends only gold
+    game.pay_chips(playerBob, expensiveCard)
+    assert game.gold_in_bank == 985
+    assert playerBob.gold == 20
+    assert game.bank.dict_of_colors['R'] == 8
+
+    rando_tier_1_card = game.board[0][1] #bob has enough gold to afford any tier 1
+    game.pay_chips(playerBob, rando_tier_1_card)
+
+    playerBob.chips = playerBob.chips.combine(Colorset(initial_value=1000)) #bob shouldn't spend gold
+    old_gold = game.gold_in_bank
+    game.pay_chips(playerBob, rando_tier_1_card)
+    new_red_total = 8 + rando_tier_1_card.cost.dict_of_colors['R']
+    assert game.bank.dict_of_colors['R'] == new_red_total
+    assert game.gold_in_bank == old_gold
+
+    
+
+    

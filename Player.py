@@ -51,6 +51,7 @@ class Player:
         noble_points = sum([noble.points for noble in self.nobles])
         return card_points + noble_points
 
+
 class Turn():
     VALID_INPUT = ['buy', 'take', 'reserve']
     # action is a string, buy / take / reserve
