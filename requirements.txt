@@ -1,16 +1,40 @@
-attrs @ file:///Users/ec2-user/ci_py311/attrs_1678315289647/work
-Bottleneck @ file:///Users/ec2-user/ci_py311/bottleneck_1678322312632/work
-iniconfig @ file:///home/linux1/recipes/ci/iniconfig_1610983019677/work
-mkl-fft==1.3.6
-mkl-random @ file:///Users/ec2-user/mkl/mkl_random_1682994911338/work
-mkl-service==2.4.0
-numexpr @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_1b50c1js9s/croot/numexpr_1683227065029/work
-numpy @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_facv4mnp7u/croot/numpy_and_numpy_base_1687466217056/work
-packaging @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_c3zlhpboab/croot/packaging_1678965318579/work
-pandas==1.5.3
-pluggy @ file:///Users/ec2-user/ci_py311/pluggy_1678315400971/work
-pytest @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_bcnsxh_kaf/croot/pytest_1684171610545/work
-python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
-pytz @ file:///Users/ec2-user/ci_py311/pytz_1678318034461/work
-six @ file:///tmp/build/80754af9/six_1644875935023/work
-tomli @ file:///Users/ec2-user/ci_py311/tomli_1678315243316/work
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: osx-64
+attrs=22.1.0=py311hecd8cb5_0
+blas=1.0=mkl
+bottleneck=1.3.5=py311hb9e55a9_0
+bzip2=1.0.8=h1de35cc_0
+ca-certificates=2023.05.30=hecd8cb5_0
+iniconfig=1.1.1=pyhd3eb1b0_0
+intel-openmp=2023.1.0=ha357a0b_43547
+libcxx=14.0.6=h9765a3e_0
+libffi=3.4.4=hecd8cb5_0
+mkl=2023.1.0=h59209a4_43558
+mkl-service=2.4.0=py311h6c40b1e_1
+mkl_fft=1.3.6=py311hdb55bb0_1
+mkl_random=1.2.2=py311hdb55bb0_1
+ncurses=6.4=hcec6c5f_0
+numexpr=2.8.4=py311h728a8a3_1
+numpy=1.25.0=py311h728a8a3_0
+numpy-base=1.25.0=py311h53bf9ac_0
+openssl=3.0.9=hca72f7f_0
+packaging=23.0=py311hecd8cb5_0
+pandas=1.5.3=py311hc5848a5_0
+pip=23.1.2=py311hecd8cb5_0
+pluggy=1.0.0=py311hecd8cb5_1
+pytest=7.3.1=py311hecd8cb5_0
+python=3.11.3=hf27a42d_1
+python-dateutil=2.8.2=pyhd3eb1b0_0
+pytz=2022.7=py311hecd8cb5_0
+readline=8.2=hca72f7f_0
+setuptools=67.8.0=py311hecd8cb5_0
+six=1.16.0=pyhd3eb1b0_1
+sqlite=3.41.2=h6c40b1e_0
+tbb=2021.8.0=ha357a0b_0
+tk=8.6.12=h5d9f67b_0
+tomli=2.0.1=py311hecd8cb5_0
+tzdata=2023c=h04d1e81_0
+wheel=0.38.4=py311hecd8cb5_0
+xz=5.4.2=h6c40b1e_0
+zlib=1.2.13=h4dc903c_0
