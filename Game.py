@@ -47,7 +47,7 @@ class Game:
     # plays a game, and returns the name of the winner
     def play_game(self):
         while True:
-            for player in self.players():
+            for player in self.players:
                 self.player_turn(player)
             if self.check_game_will_end_this_round():
                 return self.find_winner().name

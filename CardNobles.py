@@ -4,9 +4,9 @@ from Pieces import *
 df = pd.read_csv("CardNobles.csv")
 
 def get_costs(row):
-    df['Cost'] = Colorset(dict_of_colors=row[LIST_OF_COLORS].to_dict())
+    return Colorset(dict_of_colors=row[LIST_OF_COLORS].to_dict())
 
-df.apply(get_costs, axis=1)
+df['Cost'] = df.apply(get_costs, axis=1)
 df_cards = df[df['Type']=='card']
 df_nobles = df[df['Type']=='noble']
 
