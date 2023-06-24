@@ -51,13 +51,12 @@ class Player:
 
 class Turn():
     valid_input = ['take', 'buy', 'reserve']
-    def __init__(self, action, card = None, chips = None):
+    def __init__(self, action, card = None, chips = None, topdeck = None):
         if action not in valid_input:
             raise IllegalMoveException()
         self.action = action
 
-        if action == 'take':
-            return 
+
     
 
 class HumanPlayer(Player):
@@ -67,18 +66,19 @@ class HumanPlayer(Player):
     def take_turn(self, game_state):
         print(game_state['board'])
         print(game_state['bank'])
-        
-        action = Turn(input("Would you like to 'buy', 'reserve', or 'take' chips from the bank?"))
+
+        valid_input = 'brt'
+        action = input("Would you like to buy (b), reserve (r), or take chips from the bank (t)?")
         while action not in valid_input and len(action) != 1:
             action = input("Your options are buy (b), reserve (r), or take (t).")
         
         if action == 'b':
-            buy_index = input("Which card would you like to buy?")
-            return game_state[board][buy_index]
+            tier_index = int(input("Specify the tier of the card you want, 0-2: "))
+            buy_index = int(input("Which of the cards do you want, 0-2? "))
+            return Turn('buy',game_state['board'][tier_index][buy_index])
             
         elif action == 'r':
-            print(game_state.board)
-
+            topdeck = int()
             res_index = input("Which card would you like to reserve?")
 
             return game_state.board[res_index]
