@@ -50,7 +50,7 @@ class Colorset:
         return Colorset(dict_of_colors = new_total)
     
     def total(self):
-        return sum(self.dict_of_colors.values)
+        return sum(self.dict_of_colors.values())
     
     def get_amount(self, color):
         return self.dict_of_colors[color]

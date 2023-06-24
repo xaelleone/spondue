@@ -43,47 +43,73 @@ class Game:
 
         #initialize nobles
         self.nobles = random.choices(ALL_NOBLES,k=3)
-        
+     
+    # plays a game, and returns the name of the winner
+    def play_game(self):
+        while True:
+            for player in self.players():
+                self.player_turn(player)
+            if self.check_game_will_end_this_round():
+                return self.find_winner().name
+
     # takes a player's turn. takes a player, asks for them to take their turn, and updates the game
     def player_turn(self, player):
-        # player_action = self.player_list[player].take_turn(game_state)
-        # self.update_game(player_action)
-        pass
+        player_action = player.take_turn({
+            'board': self.board,
+            'bank': self.bank,
+            'other_players': self.players
+        })
+        self.update_game(player, player_action)
 
     # updates the game state given a player's turn action, including 
     def update_game(self, player, player_action):
         if player_action.action == 'reserve':
             self.update_gold_on_reserve(player)
             if player_action.topdeck is not None:
-                if not self.decks[player_action.topdeck]:
-                    raise IllegalMoveException(f'{player.name} tried to topdeck from empty deck {player_action.topdeck}')
-                reservee = self.decks[player_action.topdeck].pop()
-                player.get_reserve_from_board(reservee)
+                self.update_cards_player_topdeck_reserve(player, player_action.topdeck)
             else:
-                reservee = player_action.card
-                if reservee in self.board[reservee.tier]:
-                    self.board[reservee.tier].remove(reservee)
-                    self.draw_new_card(reservee.tier)
-                    player.get_reserve_from_board(reservee)
-                else:
-                    raise IllegalMoveException(f'{player.name} tried to reserve unavailable card')
+                self.update_cards_player_board_reserve(player, player_action.card)
         elif player_action.action == 'take':
             self.check_whether_chip_taking_is_allowed(player, player_action)
             # transfer those chips to the player, to see if it is allowed
             self.bank = self.bank.subtract_to_zero(player_action.chips)
             player.chips = player.chips.combine(player_action.chips)
         elif player_action.action == 'buy':
-            buyee = player_action.card
-            if buyee in player.reserve:
-                self.pay_chips(player, buyee)
-                player.get_card_from_reserve(buyee)
-            elif buyee in self.board[buyee.tier]:
-                self.pay_chips(player, buyee)
-                player.get_card_from_board(buyee)
-                self.board[buyee.tier].remove(buyee)
-                self.draw_new_card(buyee.tier)
-            else:
-                raise IllegalMoveException(f'{player.name} tried to buy unavailable card')
+            self.update_game_buy(player_action.card)
+            
+    # updates the state of the decks and player reserve when the player topdecks
+    def update_cards_player_topdeck_reserve(self, player, tier):
+        if not self.decks[tier]:
+            raise IllegalMoveException(f'{player.name} tried to topdeck from empty deck {tier}')
+        reservee = self.decks[tier].pop()
+        player.get_reserve_from_board(reservee)
+
+    # updates the state of the board and player reserve when the player reserves
+    # throws exception if that card isn't on the board
+    def update_cards_player_board_reserve(self, player, reservee):
+        if reservee in self.board[reservee.tier]:
+            self.remove_and_replenish_card(reservee)
+            player.get_reserve_from_board(reservee)
+        else:
+            raise IllegalMoveException(f'{player.name} tried to reserve unavailable card')
+
+    # updates the state of the board, chips, and players when a player buys a card
+    def update_game_buy(self, player, buyee):
+        if buyee in player.reserve:
+            self.pay_chips(player, buyee)
+            player.get_card_from_reserve(buyee)
+        elif buyee in self.board[buyee.tier]:
+            self.pay_chips(player, buyee)
+            player.get_card_from_board(buyee)
+            self.remove_and_replenish_card(buyee)
+        else:
+            raise IllegalMoveException(f'{player.name} tried to buy unavailable card')
+
+
+    # removes a card and draws a new one to replace it
+    def remove_and_replenish_card(self, card):
+        self.board[card.tier].remove(card)
+        self.draw_new_card(card.tier)
 
     # deals one new card from the deck of that tier if it exists, and puts it on the board
     def draw_new_card(self, tier):

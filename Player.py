@@ -12,9 +12,10 @@ class Player:
         self.gold = 0
 
 
-    #takes in game state and returns an action
-    # def take_turn(self, game_state):
-    #    pass
+    # takes in game state and returns an action
+    # parent version which is never called
+    def take_turn(self, game_state):
+       return Turn('')
    
 
     #takes in a card on the board and adds it to player tableau
