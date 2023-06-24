@@ -1,7 +1,6 @@
 # stores the state for the splendor game, and simulates the game
 from Player import *
 from CardNobles import *
-from CardNobles import *
 import random
 
 BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}

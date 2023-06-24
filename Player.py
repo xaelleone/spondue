@@ -56,6 +56,8 @@ class Turn():
             raise IllegalMoveException
         self.action = action
 
+        if action == take:
+            pass
     
 
 class HumanPlayer(Player):
