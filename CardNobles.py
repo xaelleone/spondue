@@ -25,5 +25,5 @@ def make_noble(row):
 df_cards['all_cards'] = df_cards.apply(make_card, axis=1)
 df_nobles['all_nobles'] = df_nobles.apply(make_noble, axis=1)
 
-ALL_CARDS = df_cards['all_cards'].to_list
-ALL_NOBLES = df_nobles['all_nobles'].to_list
+ALL_CARDS = df_cards['all_cards'].to_list()
+ALL_NOBLES = df_nobles['all_nobles'].to_list()
