@@ -51,14 +51,26 @@ class Player:
         return card_points + noble_points
 
 class Turn():
-    VALID_INPUT = ['take', 'buy', 'reserve']
-    # action is a string, defined by above valid inputs
+    # action is a string, buy / take / reserve
     # card is a card object, for either buy or reserve
     # chips is a colorset to get from the bank, only valid for take
     # topdeck is an int 0, 1, or 2 depending on the tier, only valid for reserves
     def __init__(self, action, card = None, chips = None, topdeck = None):
-        if action not in Turn.VALID_INPUT:
+        if action == 'buy':
+            if card is None or chips is not None or topdeck is not None:
+                raise IllegalMoveException()
+        
+        elif action == 'reserve':
+            if chips is not None or (card is not None and topdeck is not None) or (card is None and topdeck is None):
+                raise IllegalMoveException()
+
+        elif action == 'take':
+            if chips is None or card is not None or topdeck is not None:
+                raise IllegalMoveException()
+
+        else: #if no valid action was taken
             raise IllegalMoveException()
+         
         self.action = action
         self.card = card
         self.chips = chips
