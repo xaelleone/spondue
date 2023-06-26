@@ -32,7 +32,9 @@ class CscvAIPlayer(Player):
 
     def compute_card_strength(self, card: Card):
         noble_component = 0
+        #TODO: compute noble component
         card_color_component = self.color_valuability.get_amount(card.color)
+        # TODO: parametrize this quadratic
         cost_component = -1 * self.discounted_cost(card).total() ** 2
         return np.dot(self.card_strength_weights, [card.points, noble_component, card_color_component, cost_component])
     
@@ -40,6 +42,7 @@ class CscvAIPlayer(Player):
         cumulative_color_valuability = Colorset(initial_value=1)
         for tier in board:
             for card in tier:
+                # TODO: parametrize this threshold
                 card_color_strengths = self.discounted_cost(card).multiply_by_constant(max(0, self.compute_card_strength(card)))
                 cumulative_color_valuability = cumulative_color_valuability.combine(card_color_strengths)
         
