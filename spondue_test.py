@@ -2,6 +2,7 @@ from Pieces import *
 from Player import *
 from Game import *
 from CardNobles import *
+from constants import *
 import pytest
 
 expensiveCard = Card(Colorset(dict_of_colors={'W':100,'B':100,'U':100,'R':100,'G':100}),'R',1,0)

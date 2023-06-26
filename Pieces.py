@@ -1,5 +1,5 @@
 from collections import Counter
-LIST_OF_COLORS = ['W', 'B', 'R', 'U', 'G']
+from constants import *
 
 # stores the information for a single card
 class Card:
@@ -35,21 +35,21 @@ class Colorset:
 
             
     def combine(self, other): #takes in two colorsets and returns new colorset
-        new_total = [self.dict_of_colors[color] + other.dict_of_colors[color] for color in LIST_OF_COLORS]
-        return Colorset(dict_of_colors = new_total)
+        new_total = [(color, self.dict_of_colors[color] + other.dict_of_colors[color]) for color in LIST_OF_COLORS]
+        return Colorset(dict_of_colors = dict(new_total))
 
     # subtracts this colorset's amounts from another, and doesn't let numbers go below zero 
     def subtract_to_zero(self, other):
-        new_total = [max(0, self.dict_of_colors[color] - other.dict_of_colors[color]) for color in LIST_OF_COLORS]
-        return Colorset(dict_of_colors = new_total)
+        new_total = [(color, max(0, self.dict_of_colors[color] - other.dict_of_colors[color])) for color in LIST_OF_COLORS]
+        return Colorset(dict_of_colors = dict(new_total))
     
     # not actually useful in splendor game, but could be useful for reasoning about colors
     def dot_product(self, other):
         return sum([self.dict_of_colors[color] * other.dict_of_colors[color] for color in LIST_OF_COLORS])
     
     def multiply_by_constant(self, constant):
-        scaled = [self.dict_of_colors[color] * constant for color in LIST_OF_COLORS]
-        return Colorset(dict_of_colors = scaled)
+        scaled = [(color, self.dict_of_colors[color] * constant) for color in LIST_OF_COLORS]
+        return Colorset(dict_of_colors = dict(scaled))
 
     def total(self):
         return sum(self.dict_of_colors.values())

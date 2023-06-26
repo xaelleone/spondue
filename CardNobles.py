@@ -1,5 +1,6 @@
 import pandas as pd
 from Pieces import *
+from constants import *
 
 # returns tuple of two results, ALL_CARDS and ALL_NOBLES
 def get_cards_and_nobles():

@@ -6,13 +6,8 @@ import random
 import itertools
 import numpy as np
 from colorama import Fore, Style, Back
+from constants import *
 
-BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
-GOLD_CHIPS = 5
-CARDS_PER_TIER = 4
-NUMBER_OF_TIERS = 3
-WINNING_POINTS = 15
-CHIP_LIMIT = 10
 ALL_CARDS, ALL_NOBLES = get_cards_and_nobles()
 
 class Game:

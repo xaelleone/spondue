@@ -1,6 +1,6 @@
-from Game import *
 from Pieces import *
 import itertools
+from constants import *
 
 class Player:
     def __init__(self, name):
