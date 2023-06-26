@@ -55,6 +55,7 @@ class Game:
                 
                 self.player_turn(player)
                 self.assign_noble(player)
+
             if self.check_game_will_end_this_round():
                 return self.find_winner().name
 
@@ -83,7 +84,7 @@ class Game:
         print("This is your bank: ", [player.chips.dict_of_colors], " with ", player.gold, " gold.")
 
     # takes a player's turn. takes a player, asks for them to take their turn, and updates the game
-    def player_turn(self, player):
+    def player_turn(self, player,verbose=True):
         player_action = player.take_turn({
             'board': self.board,
             'bank': self.bank,
@@ -91,6 +92,17 @@ class Game:
             'gold_avail': self.gold_in_bank
         })
         self.update_game(player, player_action)
+        if verbose:
+            print(f"{player.name} {player_action.action}s this turn")
+            if player_action.action == 'buy':
+                print(f"They bought a {player_action.card.color} card from tier {player_action.card.tier} worth {player_action.card.points} points.")
+            elif player_action.action == 'take':
+                print(f"They took these colors: {player_action.chips.keys()}")
+            elif player_action.action == 'reserve' and not player_action.topdeck:
+                print(f"They reserved a card from tier {player_action.card.tier}")
+            else:
+                print(f"They topdeck reserved")
+
 
     # updates the game state given a player's turn action, including 
     def update_game(self, player, player_action):
