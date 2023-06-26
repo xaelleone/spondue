@@ -12,6 +12,7 @@ CARDS_PER_TIER = 4
 NUMBER_OF_TIERS = 3
 WINNING_POINTS = 15
 CHIP_LIMIT = 10
+ALL_CARDS, ALL_NOBLES = get_cards_and_nobles()
 
 class Game:
     # takes in a list of players in turn order & list of cards
