@@ -97,7 +97,7 @@ class Game:
             if player_action.action == 'buy':
                 print(f"They bought a {player_action.card.color} card from tier {player_action.card.tier} worth {player_action.card.points} points.")
             elif player_action.action == 'take':
-                print(f"They took these colors: {player_action.chips.keys()}")
+                print(f"They took these colors: {player_action.chips.dict_of_colors.keys()}")
             elif player_action.action == 'reserve' and not player_action.topdeck:
                 print(f"They reserved a card from tier {player_action.card.tier}")
             else:

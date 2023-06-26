@@ -5,12 +5,14 @@ from Pieces import *
 class Player:
     def __init__(self, name):
         self.name = name
+        self.reset()
+
+    def reset(self):
         self.chips = Colorset(initial_value=0)
         self.tableau = []
         self.reserve = []
         self.nobles = []
         self.gold = 0
-
 
     # takes in game state and returns an action
     # parent version which is never called
