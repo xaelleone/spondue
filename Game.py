@@ -69,7 +69,7 @@ class Game:
         def print_tier(tier):
             tier_list = self.board[tier]
             print(Fore.MAGENTA+Back.BLACK + f"Tier {tier}: " + Fore.WHITE+Back.BLACK + " ")
-            color_correspondance = {'R':Fore.RED+Back.BLACK,'G':Fore.GREEN+Back.BLACK,'U':Fore.BLUE+Back.BLACK,'W':Fore.WHITE+Back.BLACK,'B':Fore.BLACK+Back.WHITE}
+            color_correspondance = {'R':Back.RED+Fore.WHITE,'G':Back.GREEN+Fore.WHITE,'U':Back.BLUE+Fore.WHITE,'W':Back.WHITE+Fore.BLACK,'B':Fore.WHITE+Back.BLACK}
             for card in tier_list:
                 print(card.points, color_correspondance[card.color]+str(card.cost.dict_of_colors), Fore.WHITE+Back.BLACK + " ")
 
@@ -97,7 +97,7 @@ class Game:
             if player_action.action == 'buy':
                 print(f"They bought a {player_action.card.color} card from tier {player_action.card.tier} worth {player_action.card.points} points.")
             elif player_action.action == 'take':
-                print(f"They took these colors: {player_action.chips.keys()}")
+                print(f"They took these colors: {player_action.chips.dict_of_colors.keys()}")
             elif player_action.action == 'reserve' and not player_action.topdeck:
                 print(f"They reserved a card from tier {player_action.card.tier}")
             else:
