@@ -49,7 +49,7 @@ class Game:
         while True:
             for player in self.players:
                 if verbose:
-                    show_board(player)
+                    self.show_board(player)
                 
                 self.player_turn(player)
                 self.assign_noble(player)
