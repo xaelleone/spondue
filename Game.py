@@ -5,6 +5,7 @@ from CardNobles import *
 import random
 import itertools
 import numpy as np
+from colorama import Fore, Style, Back
 
 BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
 GOLD_CHIPS = 5
@@ -57,13 +58,23 @@ class Game:
                 return self.find_winner().name
 
     def show_board(self, player):
-        print("****************************")
-        print(player.name)
-        print("Here is the board: ")
-        print("Tier 0: ", [(card.cost.dict_of_colors, card.color, card.points) for card in self.board[0]])
-        print("Tier 1: ", [(card.cost.dict_of_colors, card.color, card.points) for card in self.board[1]])
-        print("Tier 2: ", [(card.cost.dict_of_colors, card.color, card.points) for card in self.board[2]])
+        print(Fore.WHITE+Back.BLACK)
         print("")
+        print("****************************")
+        print(player.name, ", it is your turn.")
+        print("Here is the board: ")
+
+        def print_tier(tier):
+            tier_list = self.board[tier]
+            print(Fore.MAGENTA+Back.BLACK + f"Tier {tier}: " + Fore.WHITE+Back.BLACK + " ")
+            color_correspondance = {'R':Fore.RED+Back.BLACK,'G':Fore.GREEN+Back.BLACK,'U':Fore.BLUE+Back.BLACK,'W':Fore.WHITE+Back.BLACK,'B':Fore.BLACK+Back.WHITE}
+            for card in tier_list:
+                print(card.points, color_correspondance[card.color]+str(card.cost.dict_of_colors), Fore.WHITE+Back.BLACK + " ")
+
+        print_tier(0)
+        print_tier(1)
+        print_tier(2)
+        print(Fore.WHITE+Back.BLACK)
         print("The bank: ", self.bank.dict_of_colors, " with ", self.gold_in_bank, " gold.")
         print("")
         print("Your reserved cards: ", ([(card.cost.dict_of_colors, card.color, card.points) for card in player.reserve]))
