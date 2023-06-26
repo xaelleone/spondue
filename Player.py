@@ -105,18 +105,7 @@ class HumanPlayer(Player):
 
     def take_turn(self, game_state): #game state is a dict of game board, game bank, and other players' board / bank / reserve
         # TODO: should in theory show the other players' things, which is in game_state
-        print("****************************")
-        print(self.name)
-        print("Here is the board: ")
-        print("Tier 0: ", [(card.cost.dict_of_colors, card.color, card.points) for card in game_state['board'][0]])
-        print("Tier 1: ", [(card.cost.dict_of_colors, card.color, card.points) for card in game_state['board'][1]])
-        print("Tier 2: ", [(card.cost.dict_of_colors, card.color, card.points) for card in game_state['board'][2]])
-        print("")
-        print("The bank: ", game_state['bank'].dict_of_colors, " with ", game_state['gold_avail'], " gold.")
-        print("")
-        print("Your reserved cards: ", ([(card.cost.dict_of_colors, card.color, card.points) for card in self.reserve]))
-        print("You have these colors: ", ([card.color for card in self.tableau]), " and ", self.get_points(), " points.")
-        print("This is your bank: ", [self.chips.dict_of_colors], " with ", self.gold, " gold.")
+
         valid_input = 'brt'
 
         action = input("Would you like to buy (b), reserve (r), or take chips from the bank (t)? ")
