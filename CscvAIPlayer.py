@@ -4,13 +4,12 @@ import numpy as np
 
 # AI player based on computing the Card strength (CS) and Color valuability (CV)
 class CscvAIPlayer(Player):
-    def __init__(self, noble_weight=0, color_valuability_weight=3, cost_weight=2, buy_threshold=0, name='Cscv'):
+    def __init__(self, points_weight = 1, noble_weight=0, color_valuability_weight=20, cost_weight=0.2, buy_threshold=0, name='Cscv'):
         super().__init__(name)
         self.color_valuability = Colorset(initial_value = 0.2)
-        self.card_strength_weights = [noble_weight, color_valuability_weight, cost_weight]
+        self.card_strength_weights = [points_weight, noble_weight, color_valuability_weight, cost_weight]
         self.buy_threshold = buy_threshold
-        self.color_valuability_attenuation = 0.5
-        self.n_iterations = 20
+        self.n_iterations = 5
 
     def take_turn(self, game_state):
         self.cscv_compute(game_state['board'])
@@ -29,19 +28,19 @@ class CscvAIPlayer(Player):
 
     # cost of a card, modulo our tableau bonos
     def discounted_cost(self, card: Card):
-        return card.cost.subtract_to_zero(Colorset(list_of_cards=self.tableau))
+        return card.cost.subtract_to_zero(self.get_purchasing_power())
 
     def compute_card_strength(self, card: Card):
         noble_component = 0
         card_color_component = self.color_valuability.get_amount(card.color)
-        cost_component = -1 * self.discounted_cost(card).dot_product(self.color_valuability.multiply_by_constant(self.color_valuability_attenuation))
-        return np.dot(self.card_strength_weights, [noble_component, card_color_component, cost_component])
+        cost_component = -1 * self.discounted_cost(card).total() ** 2
+        return np.dot(self.card_strength_weights, [card.points, noble_component, card_color_component, cost_component])
     
     def recompute_color_valuability(self, board):
-        cumulative_color_valuability = Colorset(initial_value=0)
+        cumulative_color_valuability = Colorset(initial_value=1)
         for tier in board:
             for card in tier:
-                card_color_strengths = self.discounted_cost(card).multiply_by_constant(self.compute_card_strength(card))
+                card_color_strengths = self.discounted_cost(card).multiply_by_constant(max(0, self.compute_card_strength(card)))
                 cumulative_color_valuability = cumulative_color_valuability.combine(card_color_strengths)
         
         scale = 1 / cumulative_color_valuability.total()

@@ -43,7 +43,7 @@ class Game:
      
     # plays a game, and returns the name of the winner
     def play_game(self, verbose=True):
-        while True:
+        for i in range(MAX_TURNS):
             for player in self.players:
                 if verbose:
                     self.show_board(player)
@@ -53,6 +53,7 @@ class Game:
 
             if self.check_game_will_end_this_round():
                 return self.find_winner().name
+        return 'its a draw folks'
 
     def show_board(self, player):
         print(Fore.WHITE+Back.BLACK)

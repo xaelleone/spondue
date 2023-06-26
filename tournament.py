@@ -14,11 +14,11 @@ def round_robin(players, matches_per_pairing):
                     player1.reset()
                     player2.reset()
                     matchup = Game([player1, player2])
-                    winner = matchup.play_game(verbose=True)
+                    winner = matchup.play_game(verbose=False)
                     score[winner] += 1
 
     return score
 
 players = [GreedyRandomChipGrabberAIPlayer(), CscvAIPlayer()]
 #players = [HumanPlayer('me'), CscvAIPlayer()]
-print(round_robin(players, 5))
+print(round_robin(players, 100))
