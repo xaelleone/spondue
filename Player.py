@@ -52,6 +52,10 @@ class Player:
         noble_points = sum([noble.points for noble in self.nobles])
         return card_points + noble_points
 
+    # helper function that computes how much a player can buy
+    def get_purchasing_power(self):
+        return Colorset(list_of_cards = self.tableau).combine(self.chips)
+
 
 class Turn():
     VALID_INPUT = ['buy', 'take', 'reserve']
