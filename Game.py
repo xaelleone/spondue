@@ -45,13 +45,30 @@ class Game:
         self.nobles = random.choices(ALL_NOBLES,k=3)
      
     # plays a game, and returns the name of the winner
-    def play_game(self):
+    def play_game(self, verbose=True):
         while True:
             for player in self.players:
+                if verbose:
+                    show_board(player)
+                
                 self.player_turn(player)
                 self.assign_noble(player)
             if self.check_game_will_end_this_round():
                 return self.find_winner().name
+
+    def show_board(self, player):
+        print("****************************")
+        print(player.name)
+        print("Here is the board: ")
+        print("Tier 0: ", [(card.cost.dict_of_colors, card.color, card.points) for card in self.board[0]])
+        print("Tier 1: ", [(card.cost.dict_of_colors, card.color, card.points) for card in self.board[1]])
+        print("Tier 2: ", [(card.cost.dict_of_colors, card.color, card.points) for card in self.board[2]])
+        print("")
+        print("The bank: ", self.bank.dict_of_colors, " with ", self.gold_in_bank, " gold.")
+        print("")
+        print("Your reserved cards: ", ([(card.cost.dict_of_colors, card.color, card.points) for card in player.reserve]))
+        print("You have these colors: ", ([card.color for card in player.tableau]), " and ", player.get_points(), " points.")
+        print("This is your bank: ", [player.chips.dict_of_colors], " with ", player.gold, " gold.")
 
     # takes a player's turn. takes a player, asks for them to take their turn, and updates the game
     def player_turn(self, player):
