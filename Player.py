@@ -1,6 +1,6 @@
 from Game import *
 from Pieces import *
-
+import itertools
 
 class Player:
     def __init__(self, name):
@@ -54,10 +54,29 @@ class Player:
         noble_points = sum([noble.points for noble in self.nobles])
         return card_points + noble_points
 
+    # helper function for AIs that returns a list of possible colorsets
+    def get_all_possible_chip_takings(self, bank: Colorset):
+        possible_actions = []
+
+        chips_takeable = min(3, CHIP_LIMIT - self.chips.total())
+        if chips_takeable >= 2:
+            for color in LIST_OF_COLORS:
+                if bank.get_amount(color) >= 4:
+                    candidate_action = Colorset(dict_of_colors={color: 2})
+                    possible_actions.append(candidate_action)
+        
+        available_colors = [color for color in LIST_OF_COLORS if bank.get_amount(color)]
+        color_combos = itertools.combinations(available_colors, min(chips_takeable, len(available_colors)))
+        single_chip_actions = [Colorset(dict_of_colors=dict(zip(colors_picked, [1] * chips_takeable))) for colors_picked in color_combos]
+
+        possible_actions.extend(single_chip_actions)
+
+        return possible_actions
+
+
     # helper function that computes how much a player can buy
     def get_purchasing_power(self):
         return Colorset(list_of_cards = self.tableau).combine(self.chips)
-
 
 class Turn():
     VALID_INPUT = ['buy', 'take', 'reserve']

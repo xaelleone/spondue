@@ -35,20 +35,22 @@ class Colorset:
 
             
     def combine(self, other): #takes in two colorsets and returns new colorset
-        new_total = {}
-        for color in self.dict_of_colors:
-            total = self.dict_of_colors[color] + other.dict_of_colors[color]
-            new_total.update({color: total})
+        new_total = [self.dict_of_colors[color] + other.dict_of_colors[color] for color in LIST_OF_COLORS]
         return Colorset(dict_of_colors = new_total)
 
     # subtracts this colorset's amounts from another, and doesn't let numbers go below zero 
     def subtract_to_zero(self, other):
-        new_total = {}
-        for color in self.dict_of_colors:
-            total = self.dict_of_colors[color] - other.dict_of_colors[color]
-            new_total.update({color: max(0, total)})
+        new_total = [max(0, self.dict_of_colors[color] - other.dict_of_colors[color]) for color in LIST_OF_COLORS]
         return Colorset(dict_of_colors = new_total)
     
+    # not actually useful in splendor game, but could be useful for reasoning about colors
+    def dot_product(self, other):
+        return sum([self.dict_of_colors[color] * other.dict_of_colors[color] for color in LIST_OF_COLORS])
+    
+    def multiply_by_constant(self, constant):
+        scaled = [self.dict_of_colors[color] * constant for color in LIST_OF_COLORS]
+        return Colorset(dict_of_colors = scaled)
+
     def total(self):
         return sum(self.dict_of_colors.values())
     
@@ -58,7 +60,6 @@ class Colorset:
     def check_requirement(self, wallet): #checks whether a colorset meets a requirement
         met_requirements = [self.dict_of_colors[color] <= wallet.dict_of_colors[color] for color in LIST_OF_COLORS]
         return all(met_requirements)
-
 
 class Noble:
     #requirement is a dict of color code to an int
