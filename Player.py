@@ -56,6 +56,10 @@ class Player:
     def get_purchasing_power(self):
         return Colorset(list_of_cards = self.tableau).combine(self.chips)
 
+    #helper function that returns True if a card is buyable
+    def can_buy(self, card):
+        return card.cost.check_requirement(self.get_purchasing_power())
+
 
 class Turn():
     VALID_INPUT = ['buy', 'take', 'reserve']

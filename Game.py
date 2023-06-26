@@ -80,7 +80,7 @@ class Game:
         print("The bank: ", self.bank.dict_of_colors, " with ", self.gold_in_bank, " gold.")
         print("")
         print("Your reserved cards: ", ([(card.cost.dict_of_colors, card.color, card.points) for card in player.reserve]))
-        print("You have these colors: ", ([card.color for card in player.tableau]), " and ", player.get_points(), " points.")
+        print("You have these colors: ", (Colorset(dict_of_colors=[card.color for card in player.tableau]).dict_of_colors), " and ", player.get_points(), " points.")
         print("This is your bank: ", [player.chips.dict_of_colors], " with ", player.gold, " gold.")
 
     # takes a player's turn. takes a player, asks for them to take their turn, and updates the game
@@ -89,15 +89,17 @@ class Game:
             'board': self.board,
             'bank': self.bank,
             'other_players': self.players,
-            'gold_avail': self.gold_in_bank
+            'gold_avail': self.gold_in_bank,
+            'nobles': self.nobles
         })
         self.update_game(player, player_action)
+
         if verbose:
             print(f"{player.name} {player_action.action}s this turn")
             if player_action.action == 'buy':
                 print(f"They bought a {player_action.card.color} card from tier {player_action.card.tier} worth {player_action.card.points} points.")
             elif player_action.action == 'take':
-                print(f"They took these colors: {player_action.chips.dict_of_colors.keys()}")
+                print(f"They took these colors: {player_action.chips.dict_of_colors}")
             elif player_action.action == 'reserve' and not player_action.topdeck:
                 print(f"They reserved a card from tier {player_action.card.tier}")
             else:
