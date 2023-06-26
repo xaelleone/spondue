@@ -144,11 +144,11 @@ class HumanPlayer(Player):
             return Turn(action = 'reserve', card = game_state['board'][tier_index][buy_index])
 
         elif action == 't':
-            r = int(input("How many red chips would you like? "))
-            g = int(input("How many green chips would you like? "))
-            b = int(input("How many black chips would you like? "))
             w = int(input("How many white chips would you like? "))
+            b = int(input("How many black chips would you like? "))
+            r = int(input("How many red chips would you like? "))
             u = int(input("How many blue chips would you like? "))
+            g = int(input("How many green chips would you like? "))
             color_dict = {'R':r,'G':g,'B':b,'W':w,'U':u}
     
             return Turn(action = "take", chips = Colorset(dict_of_colors=color_dict))

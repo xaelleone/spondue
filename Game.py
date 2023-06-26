@@ -5,6 +5,7 @@ from CardNobles import *
 import random
 import itertools
 import numpy as np
+from colorama import Fore, Style, Back
 
 BANK_GIVEN_PLAYER_COUNT = {2:4, 3:5, 4:7}
 GOLD_CHIPS = 5
@@ -54,17 +55,28 @@ class Game:
                 
                 self.player_turn(player)
                 self.assign_noble(player)
+
             if self.check_game_will_end_this_round():
                 return self.find_winner().name
 
     def show_board(self, player):
-        print("****************************")
-        print(player.name)
-        print("Here is the board: ")
-        print("Tier 0: ", [(card.cost.dict_of_colors, card.color, card.points) for card in self.board[0]])
-        print("Tier 1: ", [(card.cost.dict_of_colors, card.color, card.points) for card in self.board[1]])
-        print("Tier 2: ", [(card.cost.dict_of_colors, card.color, card.points) for card in self.board[2]])
+        print(Fore.WHITE+Back.BLACK)
         print("")
+        print("****************************")
+        print(player.name, ", it is your turn.")
+        print("Here is the board: ")
+
+        def print_tier(tier):
+            tier_list = self.board[tier]
+            print(Fore.MAGENTA+Back.BLACK + f"Tier {tier}: " + Fore.WHITE+Back.BLACK + " ")
+            color_correspondance = {'R':Fore.RED+Back.BLACK,'G':Fore.GREEN+Back.BLACK,'U':Fore.BLUE+Back.BLACK,'W':Fore.WHITE+Back.BLACK,'B':Fore.BLACK+Back.WHITE}
+            for card in tier_list:
+                print(card.points, color_correspondance[card.color]+str(card.cost.dict_of_colors), Fore.WHITE+Back.BLACK + " ")
+
+        print_tier(0)
+        print_tier(1)
+        print_tier(2)
+        print(Fore.WHITE+Back.BLACK)
         print("The bank: ", self.bank.dict_of_colors, " with ", self.gold_in_bank, " gold.")
         print("")
         print("Your reserved cards: ", ([(card.cost.dict_of_colors, card.color, card.points) for card in player.reserve]))
@@ -72,7 +84,7 @@ class Game:
         print("This is your bank: ", [player.chips.dict_of_colors], " with ", player.gold, " gold.")
 
     # takes a player's turn. takes a player, asks for them to take their turn, and updates the game
-    def player_turn(self, player):
+    def player_turn(self, player,verbose=True):
         player_action = player.take_turn({
             'board': self.board,
             'bank': self.bank,
@@ -80,6 +92,17 @@ class Game:
             'gold_avail': self.gold_in_bank
         })
         self.update_game(player, player_action)
+        if verbose:
+            print(f"{player.name} {player_action.action}s this turn")
+            if player_action.action == 'buy':
+                print(f"They bought a {player_action.card.color} card from tier {player_action.card.tier} worth {player_action.card.points} points.")
+            elif player_action.action == 'take':
+                print(f"They took these colors: {player_action.chips.keys()}")
+            elif player_action.action == 'reserve' and not player_action.topdeck:
+                print(f"They reserved a card from tier {player_action.card.tier}")
+            else:
+                print(f"They topdeck reserved")
+
 
     # updates the game state given a player's turn action, including 
     def update_game(self, player, player_action):
