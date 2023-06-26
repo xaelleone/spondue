@@ -75,7 +75,7 @@ class Game:
         print("The bank: ", self.bank.dict_of_colors, " with ", self.gold_in_bank, " gold.")
         print("")
         print("Your reserved cards: ", ([(card.cost.dict_of_colors, card.color, card.points) for card in player.reserve]))
-        print("You have these colors: ", (Colorset(dict_of_colors=[card.color for card in player.tableau]).dict_of_colors), " and ", player.get_points(), " points.")
+        print("You have these colors: ", (Colorset(list_of_cards=player.tableau).dict_of_colors), " and ", player.get_points(), " points.")
         print("This is your bank: ", [player.chips.dict_of_colors], " with ", player.gold, " gold.")
 
     # takes a player's turn. takes a player, asks for them to take their turn, and updates the game
