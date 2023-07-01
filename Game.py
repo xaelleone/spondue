@@ -48,7 +48,7 @@ class Game:
                 if verbose:
                     self.show_board(player)
                 
-                self.player_turn(player)
+                self.player_turn(player, verbose)
                 self.assign_noble(player)
 
             if self.check_game_will_end_this_round():
